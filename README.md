@@ -45,5 +45,3 @@ O sistema contará com funcionalidades como:
 ## Intruções
 - A definir
 
-
-```bash
