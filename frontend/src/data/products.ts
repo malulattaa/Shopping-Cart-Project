@@ -1,0 +1,68 @@
+import { Product } from '../types'
+
+export const PRODUCTS: Product[] = [
+  {
+    id: 'p1',
+    name: 'Tênis Runner Pro',
+    description: 'Tênis esportivo com amortecimento avançado para corridas de longa distância.',
+    price: 299.9,
+    image: 'https://picsum.photos/seed/p1/400/300',
+    category: 'Calçados',
+  },
+  {
+    id: 'p2',
+    name: 'Mochila Urbana 30L',
+    description: 'Mochila resistente à água com compartimento para notebook até 15".',
+    price: 189.9,
+    image: 'https://picsum.photos/seed/p2/400/300',
+    category: 'Acessórios',
+  },
+  {
+    id: 'p3',
+    name: 'Camiseta Dry-Fit',
+    description: 'Camiseta leve com tecido que afasta a umidade, ideal para treinos.',
+    price: 59.9,
+    image: 'https://picsum.photos/seed/p3/400/300',
+    category: 'Vestuário',
+  },
+  {
+    id: 'p4',
+    name: 'Fone Bluetooth Over-Ear',
+    description: 'Fone com cancelamento de ruído ativo e até 30h de bateria.',
+    price: 459.9,
+    image: 'https://picsum.photos/seed/p4/400/300',
+    category: 'Eletrônicos',
+  },
+  {
+    id: 'p5',
+    name: 'Garrafa Térmica 500ml',
+    description: 'Mantém líquidos quentes por 12h e frios por 24h. Aço inox.',
+    price: 89.9,
+    image: 'https://picsum.photos/seed/p5/400/300',
+    category: 'Casa',
+  },
+  {
+    id: 'p6',
+    name: 'Smartwatch Fit 3',
+    description: 'Monitor cardíaco, GPS integrado e resistência à água até 50m.',
+    price: 799.9,
+    image: 'https://picsum.photos/seed/p6/400/300',
+    category: 'Eletrônicos',
+  },
+  {
+    id: 'p7',
+    name: 'Livro: Clean Code',
+    description: 'Guia definitivo para escrever código limpo e manutenível.',
+    price: 74.9,
+    image: 'https://picsum.photos/seed/p7/400/300',
+    category: 'Livros',
+  },
+  {
+    id: 'p8',
+    name: 'Cadeira Ergonômica',
+    description: 'Suporte lombar ajustável, apoio de braços 4D e assento em espuma.',
+    price: 1299.9,
+    image: 'https://picsum.photos/seed/p8/400/300',
+    category: 'Móveis',
+  },
+]
