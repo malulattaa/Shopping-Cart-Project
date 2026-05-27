@@ -14,7 +14,7 @@ export function ProductCard({ product }: Props) {
     openCart()
   }
 
-  const formatted = product.price.toLocaleString('pt-BR', {
+  const formatted = product.unit_price.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   })
@@ -29,7 +29,7 @@ export function ProductCard({ product }: Props) {
         <h2 className={styles.name}>{product.name}</h2>
         <p className={styles.description}>{product.description}</p>
         <div className={styles.footer}>
-          <span className={styles.price}>{formatted}</span>
+          <span className={styles.unit_price}>{formatted}</span>
           <button className={styles.addBtn} onClick={handleAdd}>
             + Adicionar
           </button>
