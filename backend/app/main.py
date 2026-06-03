@@ -1,23 +1,21 @@
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from product.routes import product_router
+import uvicorn
 
-from .database import connect_db, close_db
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await connect_db()
-    yield
-    await close_db()
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     await connect_db()
+#     yield
+#     await close_db()
 
 
 app = FastAPI(
-    title="Shopping Cart API",
-    version="0.1.0",
-    lifespan=lifespan,
+   
 )
+
+app.include_router(product_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,3 +33,8 @@ async def health_check():
         "service": "shopping-cart-backend",
         "version": "0.1.0",
     }
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload = True)
+

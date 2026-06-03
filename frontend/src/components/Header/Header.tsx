@@ -1,7 +1,7 @@
 import { useCart } from '../../context/CartContext'
 import { useTheme } from '../../context/ThemeContext'
 import styles from './Header.module.css'
-
+import { Link } from 'react-router-dom';
 function SunIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -38,8 +38,10 @@ export function Header() {
           <span className={styles.logoText}>GAMARA</span>
         </div>
         <nav className={styles.nav}>
-          <span className={styles.navItem}>Coleção</span>
+          <Link to="/cadastrar-produto" className={styles.navItem}>Cadastrar Produto</Link>
+          <Link to="/colecao" className={styles.navItem}>Coleção</Link>
           <span className={styles.navItem}>Sobre</span>
+          
         </nav>
         <div className={styles.actions}>
           <button
@@ -64,3 +66,4 @@ export function Header() {
     </header>
   )
 }
+

@@ -32,13 +32,11 @@ O sistema contará com funcionalidades como:
 
 ### Backend
 - Python 3
+- FastAPI
 
 ### Frontend
 - React
 - Vite
-
-### Banco de Dados
-- MongoDB
 
 ---
 
