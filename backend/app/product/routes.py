@@ -79,7 +79,9 @@ initial_products = [
         "brand": "Nike",
         "description": "Tênis esportivo com amortecimento avançado para corridas de longa distância.",
         "unit_price": 299.9,
-        "stock_quantity": 7
+        "stock_quantity": 7,
+        "image": "https://picsum.photos/seed/tenis-runner/600/450",
+        "category": "Calçados",
     },
     {
         "id": 2,
@@ -87,7 +89,9 @@ initial_products = [
         "brand": "Nike",
         "description": "Mochila resistente à água com compartimento para notebook até 15\".",
         "unit_price": 189.9,
-        "stock_quantity": 6
+        "stock_quantity": 6,
+        "image": "https://picsum.photos/seed/mochila-urbana/600/450",
+        "category": "Acessórios",
     },
     {
         "id": 3,
@@ -95,7 +99,9 @@ initial_products = [
         "brand": "Nike",
         "description": "Camiseta leve com tecido que afasta a umidade, ideal para treinos.",
         "unit_price": 59.9,
-        "stock_quantity": 5
+        "stock_quantity": 5,
+        "image": "https://picsum.photos/seed/camiseta-dryfit/600/450",
+        "category": "Vestuário",
     },
     {
         "id": 4,
@@ -103,7 +109,9 @@ initial_products = [
         "brand": "JBL",
         "description": "Fone com cancelamento de ruído ativo e até 30h de bateria.",
         "unit_price": 459.9,
-        "stock_quantity": 8
+        "stock_quantity": 8,
+        "image": "https://picsum.photos/seed/fone-bluetooth/600/450",
+        "category": "Eletrônicos",
     },
     {
         "id": 5,
@@ -111,7 +119,9 @@ initial_products = [
         "brand": "Stanley",
         "description": "Mantém líquidos quentes por 12h e frios por 24h. Aço inox.",
         "unit_price": 89.9,
-        "stock_quantity": 9
+        "stock_quantity": 9,
+        "image": "https://picsum.photos/seed/garrafa-termica/600/450",
+        "category": "Casa",
     },
     {
         "id": 6,
@@ -119,7 +129,9 @@ initial_products = [
         "brand": "Xiaomi",
         "description": "Monitor cardíaco, GPS integrado e resistência à água até 50m.",
         "unit_price": 799.9,
-        "stock_quantity": 10
+        "stock_quantity": 10,
+        "image": "https://picsum.photos/seed/smartwatch-fit/600/450",
+        "category": "Eletrônicos",
     },
     {
         "id": 7,
@@ -127,7 +139,9 @@ initial_products = [
         "brand": "Editora Abril",
         "description": "Guia definitivo para escrever código limpo e manutenível.",
         "unit_price": 74.9,
-        "stock_quantity": 11
+        "stock_quantity": 11,
+        "image": "https://picsum.photos/seed/livro-cleancode/600/450",
+        "category": "Livros",
     },
     {
         "id": 8,
@@ -135,7 +149,9 @@ initial_products = [
         "brand": "Móveis",
         "description": "Suporte lombar ajustável, apoio de braços 4D e assento em espuma.",
         "unit_price": 1299.9,
-        "stock_quantity": 12
+        "stock_quantity": 12,
+        "image": "https://picsum.photos/seed/cadeira-ergonomica/600/450",
+        "category": "Escritório",
     },
 ]
 
