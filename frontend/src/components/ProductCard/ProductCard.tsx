@@ -7,11 +7,11 @@ interface Props {
 }
 
 export function ProductCard({ product }: Props) {
-  const { dispatch, openCart } = useCart()
+  const { addItem, openCart } = useCart()
 
-  const handleAdd = () => {
-    dispatch({ type: 'ADD_ITEM', product })
+  const handleAdd = async () => {
     openCart()
+    await addItem(product)
   }
 
   const formatted = product.unit_price.toLocaleString('pt-BR', {

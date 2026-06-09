@@ -63,6 +63,35 @@
   color: var(--text);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.undoBtn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  height: 30px;
+  padding: 0 0.7rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.2s;
+}
+
+.undoBtn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
 .closeBtn {
   background: none;
   border: 1px solid var(--border);
@@ -145,6 +174,22 @@
   flex-direction: column;
   gap: 0.75rem;
   flex-shrink: 0;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.summaryLabel {
+  color: var(--text-muted);
 }
 
 .totalRow {

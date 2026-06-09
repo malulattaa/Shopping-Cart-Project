@@ -7,15 +7,15 @@ interface Props {
 }
 
 export function CartItem({ item }: Props) {
-  const { dispatch } = useCart()
+  const { incrementItem, decrementItem, removeItem } = useCart()
   const { product, quantity } = item
 
-  const formatted = product.price.toLocaleString('pt-BR', {
+  const formatted = product.unit_price.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   })
 
-  const subtotal = (product.price * quantity).toLocaleString('pt-BR', {
+  const subtotal = (product.unit_price * quantity).toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   })
@@ -30,7 +30,7 @@ export function CartItem({ item }: Props) {
           <div className={styles.controls}>
             <button
               className={styles.qtyBtn}
-              onClick={() => dispatch({ type: 'DECREMENT', productId: product.id })}
+              onClick={() => decrementItem(product.id)}
               aria-label="Diminuir quantidade"
             >
               −
@@ -38,7 +38,7 @@ export function CartItem({ item }: Props) {
             <span className={styles.qty}>{quantity}</span>
             <button
               className={styles.qtyBtn}
-              onClick={() => dispatch({ type: 'INCREMENT', productId: product.id })}
+              onClick={() => incrementItem(product.id)}
               aria-label="Aumentar quantidade"
             >
               +
@@ -49,7 +49,7 @@ export function CartItem({ item }: Props) {
       </div>
       <button
         className={styles.removeBtn}
-        onClick={() => dispatch({ type: 'REMOVE_ITEM', productId: product.id })}
+        onClick={() => removeItem(product.id)}
         aria-label="Remover item"
       >
         ×

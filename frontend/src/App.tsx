@@ -8,16 +8,21 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Product } from './types'
 import { RegisterProduct } from './components/ProductRegister/ProductRegister';
+import { PurchaseHistory } from './components/PurchaseHistory/PurchaseHistory';
 import { getProducts, createProduct } from './services/productService'  // importa da API
 
 function App() {
   const [products, setProducts] = useState<Product[]>([])
 
-  // Busca os produtos do backend ao carregar
-  useEffect(() => {
+  // Busca os produtos do backend (recarregado após o checkout para refletir o estoque)
+  function loadProducts() {
     getProducts()
       .then(setProducts)
       .catch((err) => console.error("Erro ao buscar produtos:", err))
+  }
+
+  useEffect(() => {
+    loadProducts()
   }, [])
 
   async function addProduct(newProduct: Omit<Product, "id">) {
@@ -44,9 +49,10 @@ function App() {
                 path="/cadastrar-produto"
                 element={<RegisterProduct onAddProduct={addProduct} />}
               />
+              <Route path="/historico" element={<PurchaseHistory />} />
             </Routes>
           </main>
-          <CartDrawer />
+          <CartDrawer onCheckout={loadProducts} />
         </CartProvider>
       </ThemeProvider>
     </Router>

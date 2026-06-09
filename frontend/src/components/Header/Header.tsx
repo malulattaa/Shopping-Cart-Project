@@ -40,7 +40,7 @@ export function Header() {
         <nav className={styles.nav}>
           <Link to="/cadastrar-produto" className={styles.navItem}>Cadastrar Produto</Link>
           <Link to="/colecao" className={styles.navItem}>Coleção</Link>
-          <span className={styles.navItem}>Sobre</span>
+          <Link to="/historico" className={styles.navItem}>Histórico</Link>
           
         </nav>
         <div className={styles.actions}>

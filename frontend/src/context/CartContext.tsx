@@ -1,88 +1,100 @@
-import { createContext, useContext, useReducer, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { CartItem, Product } from '../types'
+import * as cartApi from '../services/cartService'
 
-type CartAction =
-  | { type: 'ADD_ITEM'; product: Product }
-  | { type: 'REMOVE_ITEM'; productId: string }
-  | { type: 'INCREMENT'; productId: string }
-  | { type: 'DECREMENT'; productId: string }
-  | { type: 'CLEAR' }
-  | { type: 'OPEN_CART' }
-  | { type: 'CLOSE_CART' }
-
-interface CartState {
+interface CartContextValue {
   items: CartItem[]
   isOpen: boolean
-}
-
-interface CartContextValue extends CartState {
+  canUndo: boolean
   totalItems: number
   totalPrice: number
-  dispatch: React.Dispatch<CartAction>
+  addItem: (product: Product) => Promise<void>
+  removeItem: (productId: number) => Promise<void>
+  incrementItem: (productId: number) => Promise<void>
+  decrementItem: (productId: number) => Promise<void>
+  clearCart: () => Promise<void>
+  undo: () => Promise<void>
+  checkout: () => Promise<cartApi.Purchase | null>
   openCart: () => void
   closeCart: () => void
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
 
-function cartReducer(state: CartState, action: CartAction): CartState {
-  switch (action.type) {
-    case 'ADD_ITEM': {
-      const existing = state.items.find(i => i.product.id === action.product.id)
-      if (existing) {
-        return {
-          ...state,
-          items: state.items.map(i =>
-            i.product.id === action.product.id ? { ...i, quantity: i.quantity + 1 } : i
-          ),
-        }
-      }
-      return { ...state, items: [...state.items, { product: action.product, quantity: 1 }] }
-    }
-    case 'REMOVE_ITEM':
-      return { ...state, items: state.items.filter(i => i.product.id !== action.productId) }
-    case 'INCREMENT':
-      return {
-        ...state,
-        items: state.items.map(i =>
-          i.product.id === action.productId ? { ...i, quantity: i.quantity + 1 } : i
-        ),
-      }
-    case 'DECREMENT':
-      return {
-        ...state,
-        items: state.items.map(i =>
-          i.product.id === action.productId
-            ? { ...i, quantity: Math.max(1, i.quantity - 1) }
-            : i
-        ),
-      }
-    case 'CLEAR':
-      return { ...state, items: [] }
-    case 'OPEN_CART':
-      return { ...state, isOpen: true }
-    case 'CLOSE_CART':
-      return { ...state, isOpen: false }
-    default:
-      return state
-  }
-}
-
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false })
+  const [items, setItems] = useState<CartItem[]>([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [canUndo, setCanUndo] = useState(false)
 
-  const totalItems = state.items.reduce((sum, i) => sum + i.quantity, 0)
-  const totalPrice = state.items.reduce((sum, i) => sum + i.product.price * i.quantity, 0)
+  // Hidrata o carrinho a partir do backend ao montar
+  useEffect(() => {
+    cartApi
+      .getCart()
+      .then((res) => {
+        setItems(res.items)
+        setCanUndo(res.can_undo)
+      })
+      .catch((err) => console.error('Erro ao carregar carrinho:', err.message))
+  }, [])
+
+  const totalItems = items.reduce((sum, i) => sum + i.quantity, 0)
+  const totalPrice = items.reduce((sum, i) => sum + i.product.unit_price * i.quantity, 0)
+
+  // Toda mutação delega ao backend e substitui o estado pela resposta autoritativa
+  const run = async (op: Promise<cartApi.CartResponse>) => {
+    try {
+      const res = await op
+      setItems(res.items)
+      setCanUndo(res.can_undo)
+    } catch (err: any) {
+      console.error('Erro no carrinho:', err.message)
+      alert(err.message)
+    }
+  }
+
+  const quantityOf = (productId: number) =>
+    items.find((i) => i.product.id === productId)?.quantity ?? 0
+
+  const addItem = (product: Product) => run(cartApi.addCartItem(product.id))
+  const removeItem = (productId: number) => run(cartApi.removeCartItem(productId))
+  const incrementItem = (productId: number) =>
+    run(cartApi.updateCartItem(productId, quantityOf(productId) + 1))
+  const decrementItem = (productId: number) =>
+    run(cartApi.updateCartItem(productId, Math.max(1, quantityOf(productId) - 1)))
+  const clearCart = () => run(cartApi.clearCart())
+  const undo = () => run(cartApi.undoCartAction())
+
+  const checkout = async (): Promise<cartApi.Purchase | null> => {
+    try {
+      const purchase = await cartApi.checkout()
+      // Compra efetivada: carrinho esvaziado no backend
+      setItems([])
+      setCanUndo(false)
+      return purchase
+    } catch (err: any) {
+      console.error('Erro ao finalizar compra:', err.message)
+      alert(err.message)
+      return null
+    }
+  }
 
   return (
     <CartContext.Provider
       value={{
-        ...state,
+        items,
+        isOpen,
+        canUndo,
         totalItems,
         totalPrice,
-        dispatch,
-        openCart: () => dispatch({ type: 'OPEN_CART' }),
-        closeCart: () => dispatch({ type: 'CLOSE_CART' }),
+        addItem,
+        removeItem,
+        incrementItem,
+        decrementItem,
+        clearCart,
+        undo,
+        checkout,
+        openCart: () => setIsOpen(true),
+        closeCart: () => setIsOpen(false),
       }}
     >
       {children}
