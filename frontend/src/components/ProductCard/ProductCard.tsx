@@ -4,9 +4,10 @@ import styles from './ProductCard.module.css'
 
 interface Props {
   product: Product
+  onDelete: (id: number) => void
 }
 
-export function ProductCard({ product }: Props) {
+export function ProductCard({ product, onDelete }: Props) {
   const { addItem, openCart } = useCart()
 
   const handleAdd = async () => {
@@ -18,6 +19,12 @@ export function ProductCard({ product }: Props) {
     style: 'currency',
     currency: 'BRL',
   })
+
+  function handleDelete() {
+    if (confirm(`Deletar "${product.name}"?`)) {
+      onDelete(product.id)
+    }
+  }
 
   return (
     <article className={styles.card}>
@@ -32,6 +39,9 @@ export function ProductCard({ product }: Props) {
           <span className={styles.unit_price}>{formatted}</span>
           <button className={styles.addBtn} onClick={handleAdd}>
             + Adicionar
+          </button>
+          <button onClick={handleDelete} className={styles.deleteButton}>
+            Excluir
           </button>
         </div>
       </div>

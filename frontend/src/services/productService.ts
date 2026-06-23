@@ -36,7 +36,22 @@ export async function updateProduct(id: number, data: Partial<Product>): Promise
 }
 
 export async function deleteProduct(id: number): Promise<{ message: string }> {
-  const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" })
+  const res = await fetch(`${BASE_URL}${id}`, { method: "DELETE" })
   if (!res.ok) throw new Error("Erro ao deletar produto")
+  return res.json()
+}
+
+export async function searchProducts(name: string): Promise<Product[]> {
+  const res = await fetch(`${BASE_URL}search?name=${encodeURIComponent(name)}`)
+  if (!res.ok) throw new Error("Erro ao buscar produtos")
+  return res.json()
+}
+
+export async function sortProducts(
+  by: "name" | "price",
+  order: "asc" | "desc" = "asc"
+): Promise<Product[]> {
+  const res = await fetch(`${BASE_URL}sort?by=${by}&order=${order}`)
+  if (!res.ok) throw new Error("Erro ao ordenar produtos")
   return res.json()
 }

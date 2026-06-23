@@ -12,7 +12,7 @@ export function RegisterProduct({ onAddProduct }: Props) {
     name: '',
     brand: '',
     description: '',
-    unit_price: 0,
+    unit_price: 1,
     stock_quantity: 0,
     image: '',
     category: '',
@@ -112,13 +112,11 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className={styles.group}>
               <label htmlFor="unit_price" className={styles.label}>Preço</label>
               <input
-                type="number"
                 id="unit_price"
                 name="unit_price"
                 value={product.unit_price}
                 onChange={handleChange}
                 className={styles.input}
-                min="0"
                 step="0.01"
                 placeholder="0,00"
                 required
@@ -128,13 +126,11 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className={styles.group}>
               <label htmlFor="stock_quantity" className={styles.label}>Quantidade em estoque</label>
               <input
-                type="number"
                 id="stock_quantity"
                 name="stock_quantity"
                 value={product.stock_quantity}
                 onChange={handleChange}
                 className={styles.input}
-                min="0"
                 placeholder="0"
                 required
               />

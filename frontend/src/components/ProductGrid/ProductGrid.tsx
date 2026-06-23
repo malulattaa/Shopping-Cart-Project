@@ -4,9 +4,10 @@ import styles from './ProductGrid.module.css'
 
 interface Props {
   products: Product[]
+  onDelete: (id: number) => void
 }
 
-export function ProductGrid({ products }: Props) {
+export function ProductGrid({ products, onDelete }: Props) {
   return (
     <section>
       <div className={styles.heading}>
@@ -15,7 +16,7 @@ export function ProductGrid({ products }: Props) {
       </div>
       <div className={styles.grid}>
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} onDelete={onDelete} />
         ))}
       </div>
     </section>

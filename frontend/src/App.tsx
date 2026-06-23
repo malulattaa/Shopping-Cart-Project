@@ -9,10 +9,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Product } from './types'
 import { RegisterProduct } from './components/ProductRegister/ProductRegister';
 import { PurchaseHistory } from './components/PurchaseHistory/PurchaseHistory';
-import { getProducts, createProduct } from './services/productService'  // importa da API
+import { getProducts, searchProducts, deleteProduct, sortProducts } from './services/productService'
+import { ProductControls, SortBy, SortOrder } from './components/ProductControls/ProductControls';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([])
+  const [sortBy, setSortBy] = useState<SortBy | null>(null)
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc")
 
   // Busca os produtos do backend (recarregado após o checkout para refletir o estoque)
   function loadProducts() {
@@ -25,14 +28,40 @@ function App() {
     loadProducts()
   }, [])
 
-  async function addProduct(newProduct: Omit<Product, "id">) {
+
+
+  function addProduct(_createdProduct: Product) {
+  loadProducts()
+  }
+  async function handleSearch(term: string) {
     try {
-      const created = await createProduct(newProduct)
-      setProducts((prev) => [...prev, created])
-    } catch (err: any) {
-      console.error("Erro ao adicionar produto:", err.message)
+      const result = term === "" ? await getProducts() : await searchProducts(term)
+      setProducts(result)
+      setSortBy(null)
+    } catch (err) {
+      console.error("Erro ao buscar produtos:", err)
     }
   }
+
+  async function handleSort(by: SortBy, order: SortOrder) {
+    try {
+      const result = await sortProducts(by, order)
+      setProducts(result)
+      setSortBy(by)
+      setSortOrder(order)
+    } catch (err) {
+      console.error("Erro ao ordenar produtos:", err)
+    }
+  }
+
+  async function handleDelete(id: number) {
+  try {
+    await deleteProduct(id)
+    loadProducts() // recarrega a lista após excluir
+  } catch (err: any) {
+    console.error("Erro ao deletar produto:", err.message)
+  }
+}
 
   return (
     <Router>
@@ -42,9 +71,19 @@ function App() {
           <main>
             <Routes>
               <Route
-                path="/colecao"
-                element={<ProductGrid products={products} />} 
-              />
+  path="/colecao"
+  element={
+    <>
+      <ProductControls
+        onSearch={handleSearch}
+        onSort={handleSort}
+        activeSortBy={sortBy}
+        activeSortOrder={sortOrder}
+      />
+      <ProductGrid products={products} onDelete={handleDelete} />
+    </>
+  }
+/>
               <Route
                 path="/cadastrar-produto"
                 element={<RegisterProduct onAddProduct={addProduct} />}

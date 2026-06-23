@@ -189,6 +189,31 @@ def get_products():
     # Converte para lista para o FastAPI serializar corretamente
     return [products[i] for i in range(len(products))]
 
+@product_router.get("/search")
+def search_products(name: str):
+    """Retorna produtos cujo nome contém o termo buscado (case-insensitive)."""
+    termo = name.strip().lower()
+    resultado = [
+        products[i] for i in range(len(products))
+        if termo in products[i]["name"].lower()
+    ]
+    return resultado
+
+@product_router.get("/sort")
+def sort_products(by: str = "name", order: str = "asc"):
+    """Ordena os produtos por 'name' ou 'price' (unit_price)."""
+    if by not in ("name", "price"):
+        raise HTTPException(status_code=400, detail="Parâmetro 'by' deve ser 'name' ou 'price'")
+    if order not in ("asc", "desc"):
+        raise HTTPException(status_code=400, detail="Parâmetro 'order' deve ser 'asc' ou 'desc'")
+
+    chave = "name" if by == "name" else "unit_price"
+    lista = [products[i] for i in range(len(products))]
+    lista.sort(
+        key=lambda p: p[chave].lower() if chave == "name" else p[chave],
+        reverse=(order == "desc"),
+    )
+    return lista
 
 @product_router.get("/{id}")
 def get_product(id: int):
